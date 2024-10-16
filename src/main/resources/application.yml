@@ -1,1 +1,3 @@
-spring.application.name=e-commerce-service
+spring:
+  profiles:
+    active: local
