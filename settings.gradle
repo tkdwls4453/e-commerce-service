@@ -1,0 +1,4 @@
+rootProject.name = "e-commerce-service"
+include 'common'
+include 'user'
+
