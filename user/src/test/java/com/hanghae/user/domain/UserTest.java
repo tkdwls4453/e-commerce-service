@@ -27,11 +27,13 @@ class UserTest {
         User user = User.createUser(dto, encryptedPassword);
 
         // Then
+        assertThat(user.getId()).isNull();
         assertThat(user.getName()).isEqualTo("user");
         assertThat(user.getAddress()).isEqualTo("seoul");
         assertThat(user.getEmail()).isEqualTo(email);
         assertThat(user.getPassword()).isEqualTo(encryptedPassword);
         assertThat(user.getPhoneNumber()).isEqualTo("010-1234-1234");
+        assertThat(user.isActive()).isFalse();
 
     }
 
