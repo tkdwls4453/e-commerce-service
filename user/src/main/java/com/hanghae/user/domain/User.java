@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class User {
 
-    private Long id;
-    private String name;
-    private String email;
-    private String password;
-    private String phoneNumber;
-    private String address;
-    private boolean active;
+    private final Long id;
+    private final String name;
+    private final String email;
+    private final String password;
+    private final String phoneNumber;
+    private final String address;
+    private final boolean active;
 
     @Builder
     private User(Long id, String name, String email, String password, String phoneNumber, String address, boolean active) {
