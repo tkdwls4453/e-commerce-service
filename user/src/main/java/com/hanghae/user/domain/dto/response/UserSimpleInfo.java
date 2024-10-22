@@ -18,5 +18,4 @@ public record UserSimpleInfo(
             .active(user.isActive())
             .build();
     }
-
 }

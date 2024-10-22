@@ -21,17 +21,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(
-                CustomResponse.error(GlobalErrorCode.INVALID_INPUT_VALUE)
+                CustomResponse.failure(GlobalErrorCode.INVALID_INPUT_VALUE)
             );
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CustomResponse> catchRuntimeException(RuntimeException e) {
+    public ResponseEntity<CustomResponse> catchRuntimeException(Exception e) {
         log.error("[error] message: {}", e.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
-                CustomResponse.error(GlobalErrorCode.INTERNAL_SERVER_ERROR)
+                CustomResponse.failure(GlobalErrorCode.INTERNAL_SERVER_ERROR)
             );
     }
 }

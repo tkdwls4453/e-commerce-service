@@ -126,3 +126,6 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,kotlin,macos,windows
+.idea/modules/user/e-commerce-service.user.main.iml
+
+.idea/modules/common/e-commerce-service.common.main.iml

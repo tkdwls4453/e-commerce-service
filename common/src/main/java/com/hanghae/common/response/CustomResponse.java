@@ -9,10 +9,9 @@ import lombok.Getter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomResponse<T> {
 
-    private String code;
-    private String message;
-    private T data;
-
+    private final String code;
+    private final String message;
+    private final T data;
 
     @Builder
     private CustomResponse(String code, String message, T data) {
@@ -21,32 +20,27 @@ public class CustomResponse<T> {
         this.data = data;
     }
 
-    public static CustomResponse ok(){
-        return CustomResponse.builder()
-            .code("200")
-            .message("ok")
-            .build();
+    public static CustomResponse<Void> success() {
+        return createResponse("200", "ok", null);
     }
 
-    public static <T> CustomResponse ok(T data){
-        return CustomResponse.builder()
-            .code("200")
-            .message("ok")
-            .data(data)
-            .build();
+    public static <T> CustomResponse<T> success(T data) {
+        return createResponse("200", "ok", data);
     }
 
-    public static CustomResponse error(ErrorCode errorCode){
-        return CustomResponse.builder()
-            .code(errorCode.getCode())
-            .message(errorCode.getMessage())
-            .build();
+    public static CustomResponse<Void> failure(ErrorCode errorCode) {
+        return createResponse(errorCode.getCode(), errorCode.getMessage(), null);
     }
 
-    public static CustomResponse error(String code, String message){
-        return CustomResponse.builder()
+    public static CustomResponse<Void> failure(String code, String message) {
+        return createResponse(code, message, null);
+    }
+
+    private static <T> CustomResponse<T> createResponse(String code, String message, T data) {
+        return CustomResponse.<T>builder()
             .code(code)
             .message(message)
+            .data(data)
             .build();
     }
 }

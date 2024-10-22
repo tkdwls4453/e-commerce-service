@@ -18,7 +18,7 @@ public class CustomExceptionHandler {
 
         return ResponseEntity
             .status(e.getHttpStatus())
-            .body(CustomResponse.error(e.getCode(), e.getMessage()));
+            .body(CustomResponse.failure(e.getCode(), e.getMessage()));
     }
 
 }
