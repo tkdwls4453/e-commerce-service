@@ -6,6 +6,7 @@ import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -13,11 +14,10 @@ import org.springframework.stereotype.Service;
 public class UserWriteService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-    //TODO: 패스워드 암호화 로직 필요, 스프링 시큐리티 적용시 추가 예정
     public UserSimpleInfo createUser(UserCreate userCreate) {
-        User user = User.createUser(userCreate, "encryptedPassword");
+        User user = User.createUser(userCreate, bCryptPasswordEncoder.encode(userCreate.password()));
         return UserSimpleInfo.from(userRepository.save(user));
     }
 }

@@ -71,4 +71,8 @@ public class UserEntity extends BaseEntity {
             .active(this.active)
             .build();
     }
+
+    public void updateId(Long id){
+        this.id = id;
+    }
 }

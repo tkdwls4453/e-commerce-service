@@ -6,6 +6,7 @@ import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 import com.hanghae.user.presentation.dto.request.UserCreateRequest;
 import com.hanghae.user.presentation.dto.response.UserSimpleInfoResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,14 +23,13 @@ public class UserController {
 
     @PostMapping
     public CustomResponse<UserSimpleInfoResponse> createUser(
-        @RequestBody UserCreateRequest request
+        @Valid @RequestBody UserCreateRequest request
     ) {
         UserCreate userCreate = UserDtoMapper.toUserCreate(request);
         UserSimpleInfo result = userWriteService.createUser(userCreate);
 
-        return CustomResponse.ok(UserDtoMapper.toUserSimpleInfoResponse(result));
+        return CustomResponse.success(UserDtoMapper.toUserSimpleInfoResponse(result));
     }
-
     @GetMapping
     public String healthCheck(){
         return "hello";
