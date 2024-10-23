@@ -4,6 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record ProductSimpleInfoResponse(
+    Long id,
     String name,
     String description,
     Integer price

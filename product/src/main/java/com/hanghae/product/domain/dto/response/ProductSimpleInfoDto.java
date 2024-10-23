@@ -5,6 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record ProductSimpleInfoDto(
+    Long id,
     String name,
     String description,
     Integer price
@@ -12,6 +13,7 @@ public record ProductSimpleInfoDto(
 
     public static ProductSimpleInfoDto from(Product product) {
         return ProductSimpleInfoDto.builder()
+            .id(product.getId())
             .name(product.getName())
             .description(product.getDescription())
             .price(product.getPrice())

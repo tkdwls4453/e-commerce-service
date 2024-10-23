@@ -2,7 +2,9 @@ package com.hanghae.product.presentation;
 
 import com.hanghae.common.response.CustomResponse;
 import com.hanghae.product.application.ProductService;
+import com.hanghae.product.domain.dto.response.ProductDetailDto;
 import com.hanghae.product.domain.dto.response.ProductPageDto;
+import com.hanghae.product.presentation.dto.response.ProductDetailResponse;
 import com.hanghae.product.presentation.dto.response.ProductPageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
+@RequestMapping("api/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -27,5 +29,13 @@ public class ProductController {
 
         ProductPageResponse productPageResponse = ProductDtoMapper.toProductPageResponse(productPageDto);
         return CustomResponse.success(productPageResponse);
+    }
+
+    @GetMapping("/{productId}")
+    public CustomResponse<ProductDetailResponse> getProductDetail(
+        @PathVariable(value = "productId") Long productId
+    ){
+        ProductDetailDto productDetail = productService.getProductDetail(productId);
+        return CustomResponse.success(ProductDtoMapper.toProductDetailResponse(productDetail));
     }
 }
