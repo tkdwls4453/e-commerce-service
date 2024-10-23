@@ -3,6 +3,7 @@ package com.hanghae.product.mock;
 import com.hanghae.product.application.port.ProductQueryRepository;
 import com.hanghae.product.application.port.ProductRepository;
 import com.hanghae.product.domain.Product;
+import com.hanghae.product.domain.dto.response.ProductDetailDto;
 import com.hanghae.product.domain.dto.response.ProductPageDto;
 import com.hanghae.product.domain.dto.response.ProductSimpleInfoDto;
 import java.util.HashMap;
@@ -45,6 +46,12 @@ public class FakeProductQueryRepository implements ProductQueryRepository {
             .cursor(newCursor)
             .products(productSimpleInfoDtos)
             .build();
+    }
+
+    @Override
+    public ProductDetailDto findByIdWithItem(Long productId) {
+
+        return null;
     }
 
 }
