@@ -2,24 +2,26 @@ package com.hanghae.user.presentation;
 
 import com.hanghae.common.response.CustomResponse;
 import com.hanghae.user.application.EmailService;
+import com.hanghae.user.presentation.dto.request.EmailVerificationRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/email")
+@RequestMapping("/api/auth")
 public class EmailController {
 
     private final EmailService emailService;
 
-    @PostMapping("/send")
+    @PostMapping("/email-verification")
     public CustomResponse<String> sendVerificationEmail(
-        @RequestParam String email
+        @RequestBody EmailVerificationRequest request
     ) {
-        emailService.sendVerificationEmail(email);
+        emailService.sendVerificationEmail(request.email());
         return CustomResponse.success("이메일을 전송했습니다.");
     }
 }
