@@ -1,7 +1,7 @@
 package com.hanghae.user.presentation.dto.request;
 
 
-public record EmailVerificationRequest(
+public record SendVerificationCodeRequest(
     String email
 ) {
 

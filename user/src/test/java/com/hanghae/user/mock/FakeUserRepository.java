@@ -29,4 +29,14 @@ public class FakeUserRepository implements UserRepository {
         return Optional.of(store.get(id).toDomain());
     }
 
+    @Override
+    public void updateUserActive(String email) {
+
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+
 }

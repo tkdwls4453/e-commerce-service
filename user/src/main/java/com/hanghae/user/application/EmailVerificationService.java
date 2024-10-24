@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class EmailService {
+public class EmailVerificationService {
 
     private final JavaMailSender mailSender;
     private final RedisTemplate<String, String> redisTemplate;
@@ -38,5 +38,17 @@ public class EmailService {
             verificationCode,
             Duration.ofMinutes(5)
         );
+    }
+
+    public boolean isVerificationCodeValid(String email, String verificationCode) {
+        String key = EMAIL_KEY_PREFIX + email;
+        String value = redisTemplate.opsForValue().get(key);
+
+        if(value != null && value.equals(verificationCode)){
+            redisTemplate.delete(key);
+            return true;
+        }
+
+        return false;
     }
 }

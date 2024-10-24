@@ -1,7 +1,7 @@
 package com.hanghae.user.presentation;
 
 import com.hanghae.common.response.CustomResponse;
-import com.hanghae.user.application.UserWriteService;
+import com.hanghae.user.application.UserService;
 import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 import com.hanghae.user.presentation.dto.request.UserCreateRequest;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserWriteService userWriteService;
+    private final UserService userWriteService;
 
     @PostMapping
     public CustomResponse<UserSimpleInfoResponse> createUser(
