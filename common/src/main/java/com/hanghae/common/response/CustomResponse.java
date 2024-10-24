@@ -28,6 +28,10 @@ public class CustomResponse<T> {
         return createResponse("200", "ok", data);
     }
 
+    public static CustomResponse<String> failure(String message) {
+        return createResponse("400", message, null);
+    }
+
     public static CustomResponse<Void> failure(ErrorCode errorCode) {
         return createResponse(errorCode.getCode(), errorCode.getMessage(), null);
     }

@@ -11,11 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-class UserWriteServiceTest {
+class UserServiceTest {
 
     private final UserRepository userRepository = new FakeUserRepository();
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    private final UserWriteService userWriteService = new UserWriteService(userRepository, bCryptPasswordEncoder);
+    private final UserService userWriteService = new UserService(userRepository, bCryptPasswordEncoder);
 
 
     @Test

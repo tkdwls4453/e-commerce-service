@@ -22,4 +22,14 @@ public class UserRepositoryImpl implements UserRepository {
         return userJpaRepository.findById(id).map(UserEntity::toDomain);
     }
 
+    @Override
+    public void updateUserActive(String email) {
+        userJpaRepository.updateUserActiveByEmail(email);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userJpaRepository.existsByEmail(email);
+    }
+
 }

@@ -7,4 +7,8 @@ public interface UserRepository {
     User save(User user);
 
     Optional<User> findById(Long id);
+
+    void updateUserActive(String email);
+
+    boolean existsByEmail(String email);
 }
