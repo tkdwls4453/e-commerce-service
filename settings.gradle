@@ -2,4 +2,4 @@ rootProject.name = "e-commerce-service"
 include 'common'
 include 'user'
 include 'product'
-
+include 'config-server'
