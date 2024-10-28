@@ -20,4 +20,8 @@ public class ProductService {
     public ProductDetailDto getProductDetail(Long productId){
         return productQueryRepository.findByIdWithItem(productId);
     }
+
+    public boolean isExistsAndActive(Long productId) {
+        return productQueryRepository.existsByIdAndActive(productId);
+    }
 }

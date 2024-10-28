@@ -27,4 +27,15 @@ public interface ProductJpaQueryRepository extends JpaRepository<ProductEntity, 
         """
     )
     int countIsActive();
+
+    @Query(
+        """
+        SELECT EXISTS(
+          SELECT 1
+          FROM ProductEntity p
+          WHERE p.id = :productId AND p.active = true
+        )
+        """
+    )
+    boolean existsByIdAndActive(Long productId);
 }

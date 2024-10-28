@@ -61,4 +61,14 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
 
             .build();
     }
+
+    @Override
+    public boolean existsById(Long productId) {
+        return productJpaQueryRepository.existsById(productId);
+    }
+
+    @Override
+    public boolean existsByIdAndActive(Long productId) {
+        return productJpaQueryRepository.existsByIdAndActive(productId);
+    }
 }

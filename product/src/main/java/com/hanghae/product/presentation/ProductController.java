@@ -38,4 +38,12 @@ public class ProductController {
         ProductDetailDto productDetail = productService.getProductDetail(productId);
         return CustomResponse.success(ProductDtoMapper.toProductDetailResponse(productDetail));
     }
+
+    @GetMapping("/{productId}/exists")
+    public CustomResponse<Boolean> isExistsProduct(
+        @PathVariable(value = "productId") Long productId
+    ){
+        boolean result = productService.isExistsAndActive(productId);
+        return CustomResponse.success(result);
+    }
 }
