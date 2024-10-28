@@ -129,3 +129,5 @@ gradle-app.setting
 *.iml
 
 config-server/src/main/resources/application.properties
+
+*.properties
