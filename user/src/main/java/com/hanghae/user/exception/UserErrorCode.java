@@ -9,7 +9,8 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum UserErrorCode implements ErrorCode {
     INVALID_EMAIL_VALUE(HttpStatus.BAD_REQUEST, "1001", "이메일 형식이 맞지앖습니다."),
-    NOT_FOUND_EMAIL(HttpStatus.BAD_REQUEST, "1002", "가입되지 않은 이메일입니다.");
+    NOT_FOUND_EMAIL(HttpStatus.BAD_REQUEST, "1002", "가입되지 않은 이메일입니다."),
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 이메일입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

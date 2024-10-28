@@ -5,6 +5,7 @@ import com.hanghae.user.domain.User;
 import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 
+import com.hanghae.user.exception.DuplicatedEmailException;
 import com.hanghae.user.exception.NotFoundEmailException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,9 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserSimpleInfo createUser(UserCreate userCreate) {
+        if(userRepository.existsByEmail(userCreate.email())){
+            throw new DuplicatedEmailException();
+        }
         User user = User.createUser(userCreate, bCryptPasswordEncoder.encode(userCreate.password()));
         return UserSimpleInfo.from(userRepository.save(user));
     }
