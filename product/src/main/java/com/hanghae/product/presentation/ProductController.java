@@ -6,6 +6,7 @@ import com.hanghae.product.domain.dto.response.ProductDetailDto;
 import com.hanghae.product.domain.dto.response.ProductPageDto;
 import com.hanghae.product.presentation.dto.response.ProductDetailResponse;
 import com.hanghae.product.presentation.dto.response.ProductPageResponse;
+import com.hanghae.product.presentation.dtoMapper.ProductDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
