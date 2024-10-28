@@ -1,20 +1,22 @@
+server:
+  port: 8075
+
 spring:
+  application:
+    name: user
   profiles:
     active: local
+  config:
+    import: optional:configserver:http://admin:1234@localhost:9000
 
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_SMTP_ADDRESS}
-    password: ${MAIL_SMTP_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://admin:1234@localhost:8761/eureka
