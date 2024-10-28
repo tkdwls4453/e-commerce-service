@@ -62,6 +62,15 @@ public class UserEntity extends BaseEntity {
             .build();
     }
 
+    public void update(User updatedUser) {
+        this.name = updatedUser.getName();
+        this.email = updatedUser.getEmail();
+        this.password = updatedUser.getPassword();
+        this.phoneNumber = updatedUser.getPhoneNumber();
+        this.address = updatedUser.getAddress();
+        this.active = updatedUser.isActive();
+    }
+
     public User toDomain() {
         return User.builder()
             .id(this.id)

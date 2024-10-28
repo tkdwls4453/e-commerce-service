@@ -43,4 +43,16 @@ public class User {
             .active(false)
             .build();
     }
+
+    public User changeActive() {
+        return User.builder()
+            .id(id)
+            .name(name)
+            .email(email)
+            .password(password)
+            .phoneNumber(phoneNumber)
+            .address(address)
+            .active(true)
+            .build();
+    }
 }

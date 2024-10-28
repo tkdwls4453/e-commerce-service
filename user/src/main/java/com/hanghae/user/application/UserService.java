@@ -28,13 +28,12 @@ public class UserService {
         return UserSimpleInfo.from(userRepository.save(user));
     }
 
-    // 지금 User 도메인의 상태를 변경하지 않고 바로 데이터베이스에 쿼리를 날리는 상황, DDD 가 아닌가?
-    // 그럼 User 도메인의 상태를 변경하고, 디비에 그 내용을 반영?
     public void activeUser(String email) {
-        if(!userRepository.existsByEmail(email)){
-            throw new NotFoundEmailException();
-        }
+        User user = userRepository.findByEmail(email).orElseThrow(
+            NotFoundEmailException::new
+        );
 
-        userRepository.updateUserActive(email);
+        User updatedUser = user.changeActive();
+        userRepository.updateUser(updatedUser);
     }
 }

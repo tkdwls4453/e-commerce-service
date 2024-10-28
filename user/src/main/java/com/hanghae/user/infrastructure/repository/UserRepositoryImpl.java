@@ -2,6 +2,7 @@ package com.hanghae.user.infrastructure.repository;
 
 import com.hanghae.user.application.port.UserRepository;
 import com.hanghae.user.domain.User;
+import com.hanghae.user.exception.NotFoundUserException;
 import com.hanghae.user.infrastructure.UserEntity;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,22 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean existsByEmail(String email) {
         return userJpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        UserEntity userEntity = userJpaRepository.findByEmail(email).orElse(null);
+
+        return userEntity == null ? Optional.empty() : Optional.of(userEntity.toDomain());
+    }
+
+    @Override
+    public void updateUser(User updatedUser) {
+        UserEntity userEntity = userJpaRepository.findById(updatedUser.getId()).orElseThrow(
+            NotFoundUserException::new
+        );
+
+        userEntity.update(updatedUser);
     }
 
 }
