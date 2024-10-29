@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -33,9 +34,9 @@ public class ItemController {
 
     @GetMapping
     public CustomResponse<List<ItemProductResponse>> getItemProducts(
-        @RequestBody GetItemProductRequest request
+        @RequestParam("itemIds") List<Long> itemIds
     ) {
-        List<ItemProductDto> itemProductDtos = itemService.getItemProducts(request.itemIds());
+        List<ItemProductDto> itemProductDtos = itemService.getItemProducts(itemIds);
 
         List<ItemProductResponse> result = itemProductDtos.stream().map(
                 ItemDtoMapper::toItemProductResponse
