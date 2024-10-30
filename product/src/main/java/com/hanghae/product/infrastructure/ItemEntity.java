@@ -3,6 +3,7 @@ package com.hanghae.product.infrastructure;
 import com.hanghae.common.infrastructure.BaseEntity;
 import com.hanghae.product.domain.ItemStatus;
 import com.hanghae.product.domain.dto.response.ItemDto;
+import com.hanghae.product.domain.dto.response.ItemInfoDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,4 +53,13 @@ public class ItemEntity extends BaseEntity {
             .build();
     }
 
+    public ItemInfoDto toInfoDto() {
+        return ItemInfoDto.builder()
+            .id(this.id)
+            .price(this.price)
+            .color(this.color)
+            .size(this.size)
+            .stockQuantity(this.stockQuantity)
+            .build();
+    }
 }

@@ -6,6 +6,7 @@ import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 import com.hanghae.user.presentation.dto.request.UserCreateRequest;
 import com.hanghae.user.presentation.dto.response.UserSimpleInfoResponse;
+import com.hanghae.user.presentation.mapper.UserDtoMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

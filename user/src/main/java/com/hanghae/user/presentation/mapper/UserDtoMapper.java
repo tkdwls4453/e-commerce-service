@@ -1,4 +1,4 @@
-package com.hanghae.user.presentation;
+package com.hanghae.user.presentation.mapper;
 
 import com.hanghae.user.domain.dto.request.UserCreate;
 import com.hanghae.user.domain.dto.response.UserSimpleInfo;

@@ -8,4 +8,8 @@ public interface ProductQueryRepository {
     ProductPageDto findAllActiveByCursor(Long cursor, int size);
 
     ProductDetailDto findByIdWithItem(Long productId);
+
+    boolean existsById(Long productId);
+
+    boolean existsByIdAndActive(Long productId);
 }

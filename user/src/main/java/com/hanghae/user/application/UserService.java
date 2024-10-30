@@ -7,10 +7,11 @@ import com.hanghae.user.domain.dto.response.UserSimpleInfo;
 
 import com.hanghae.user.exception.DuplicatedEmailException;
 import com.hanghae.user.exception.NotFoundEmailException;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @RequiredArgsConstructor

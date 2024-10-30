@@ -1,4 +1,5 @@
 package com.hanghae.product.domain;
+
 public class Item {
 
     private Long id;
