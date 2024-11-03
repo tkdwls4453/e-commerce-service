@@ -5,10 +5,9 @@ import com.hanghae.user.domain.CartItem;
 import com.hanghae.user.domain.dto.request.CartItemDto;
 import com.hanghae.user.domain.dto.response.ItemInfo;
 import com.hanghae.user.exception.InvalidQuantityException;
-import com.hanghae.user.infrastructure.client.ItemClient;
+import com.hanghae.user.application.client.ItemClient;
 
-import com.hanghae.user.infrastructure.client.request.GetItemProductRequest;
-import com.hanghae.user.infrastructure.client.response.ItemProductResponse;
+import com.hanghae.user.application.client.response.ItemProductResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

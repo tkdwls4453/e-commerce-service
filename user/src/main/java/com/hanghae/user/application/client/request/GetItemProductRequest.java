@@ -1,4 +1,4 @@
-package com.hanghae.user.infrastructure.client.request;
+package com.hanghae.user.application.client.request;
 
 import java.util.List;
 import lombok.Builder;
