@@ -1,4 +1,4 @@
-package com.hanghae.product.presentation.dtoMapper;
+package com.hanghae.product.presentation.mapper;
 
 import com.hanghae.product.domain.dto.response.ItemInfoDto;
 import com.hanghae.product.domain.dto.response.ItemProductDto;
@@ -20,11 +20,13 @@ public class ItemDtoMapper {
 
     public static ItemProductResponse toItemProductResponse(ItemProductDto dto) {
         return ItemProductResponse.builder()
+            .itemId(dto.itemId())
             .productName(dto.productName())
             .description(dto.description())
             .color(dto.color())
             .size(dto.size())
             .price(dto.price())
+            .stockQuantity(dto.stockQuantity())
             .build();
     }
 }

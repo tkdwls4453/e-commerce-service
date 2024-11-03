@@ -1,4 +1,4 @@
-package com.hanghae.product.presentation.dtoMapper;
+package com.hanghae.product.presentation.mapper;
 
 import com.hanghae.product.domain.dto.response.ProductDetailDto;
 import com.hanghae.product.domain.dto.response.ProductPageDto;
