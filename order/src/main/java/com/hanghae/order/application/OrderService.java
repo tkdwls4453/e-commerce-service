@@ -10,7 +10,9 @@ import com.hanghae.order.application.client.ItemClient;
 import com.hanghae.order.domain.dto.response.OrderDto;
 import com.hanghae.order.domain.dto.response.OrderItemDto;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +37,12 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList) {
+
+        Map<Long, Integer> quantityMap = new HashMap<>();
+
+        for(OrderCreateDto orderCreateDto : orderCreateDtoList) {
+            quantityMap.put(orderCreateDto.itemId(), orderCreateDto.quantity());
+        }
         // 아이템 아이디로 아이템 조회 (product service 에 feign client)
         List<Long> itemIds = orderCreateDtoList.stream().map(OrderCreateDto::itemId).toList();
 
@@ -55,7 +63,7 @@ public class OrderService {
         }
 
         order.addOrderItem(orderItems);
-        List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(OrderItemDto::from).toList();
+        List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(response -> OrderItemDto.from(response, quantityMap)).toList();
 
         // order 와 orderItem 을 데이터베이스에 저장
         Order savedOrder = orderRepository.save(order);

@@ -30,6 +30,7 @@ public class OrderDtoMapper {
             .color(orderItemDto.color())
             .size(orderItemDto.size())
             .price(orderItemDto.price())
+            .quantity(orderItemDto.quantity())
             .build();
     }
 }
