@@ -2,8 +2,10 @@ package com.hanghae.order.presentation.mapper;
 
 import com.hanghae.order.domain.dto.response.OrderDto;
 import com.hanghae.order.domain.dto.response.OrderItemDto;
+import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import com.hanghae.order.presentation.response.OrderItemResponse;
 import com.hanghae.order.presentation.response.OrderResponse;
+import com.hanghae.order.presentation.response.SimpleOrderResponse;
 import java.util.List;
 
 public class OrderDtoMapper {
@@ -31,6 +33,16 @@ public class OrderDtoMapper {
             .size(orderItemDto.size())
             .price(orderItemDto.price())
             .quantity(orderItemDto.quantity())
+            .build();
+    }
+
+    public static SimpleOrderResponse toSimpleOrderResponse(SimpleOrderDto simpleOrderDto) {
+        return SimpleOrderResponse.builder()
+            .id(simpleOrderDto.id())
+            .orderStatus(simpleOrderDto.orderStatus())
+            .userId(simpleOrderDto.userId())
+            .totalPrice(simpleOrderDto.totalPrice())
+            .date(simpleOrderDto.date())
             .build();
     }
 }

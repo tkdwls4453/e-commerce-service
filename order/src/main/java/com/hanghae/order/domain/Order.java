@@ -1,5 +1,7 @@
 package com.hanghae.order.domain;
 
+import com.hanghae.common.infrastructure.BaseEntity;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Order {
+public class Order extends BaseEntity {
     private final Long id;
 
     private OrderStatus orderStatus;
@@ -18,12 +20,15 @@ public class Order {
 
     private final List<OrderItem> orderItems = new ArrayList<>();
 
+    private final LocalDateTime createTime;
+
     @Builder
-    private Order(Long id, OrderStatus orderStatus, Long userId, Integer totalPrice) {
+    private Order(Long id, OrderStatus orderStatus, Long userId, Integer totalPrice, LocalDateTime createTime) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.userId = userId;
         this.totalPrice = totalPrice;
+        this.createTime = createTime;
     }
 
     public static Order create(Long userId) {

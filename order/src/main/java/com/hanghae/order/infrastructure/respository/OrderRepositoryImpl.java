@@ -3,8 +3,10 @@ package com.hanghae.order.infrastructure.respository;
 import com.hanghae.order.application.port.OrderRepository;
 import com.hanghae.order.domain.Order;
 import com.hanghae.order.domain.OrderItem;
+import com.hanghae.order.domain.OrderStatus;
 import com.hanghae.order.infrastructure.OrderEntity;
 import com.hanghae.order.infrastructure.OrderItemEntity;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +27,12 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         return orderEntity.toDomain();
     }
+
+    @Override
+    public List<Order> findByUserIdAndStatusIsNotPending(Integer userId) {
+        List<OrderEntity> orderEntities = orderJpaRepository.findByUserIdAndOrderStatusNot(userId, OrderStatus.PAYMENT_PENDING);
+
+        return orderEntities.stream().map(OrderEntity::toDomain).toList();
+    }
+
 }

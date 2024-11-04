@@ -9,6 +9,7 @@ import com.hanghae.order.domain.dto.request.OrderCreateDto;
 import com.hanghae.order.application.client.ItemClient;
 import com.hanghae.order.domain.dto.response.OrderDto;
 import com.hanghae.order.domain.dto.response.OrderItemDto;
+import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,5 +69,12 @@ public class OrderService {
         // order 와 orderItem 을 데이터베이스에 저장
         Order savedOrder = orderRepository.save(order);
         return OrderDto.from(savedOrder, orderItemDtos);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SimpleOrderDto> getOrders(Integer userId) {
+        List<Order> orders = orderRepository.findByUserIdAndStatusIsNotPending(userId);
+
+        return orders.stream().map(SimpleOrderDto::from).toList();
     }
 }
