@@ -58,7 +58,6 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
             .name(productEntity.getName())
             .description(productEntity.getDescription())
             .items(items)
-
             .build();
     }
 

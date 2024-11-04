@@ -1,16 +1,16 @@
-package com.hanghae.product.domain.dto.response;
+package com.hanghae.order.presentation.response;
 
 import lombok.Builder;
 
 @Builder
-public record ItemProductDto(
+public record OrderItemResponse(
     Long itemId,
     String productName,
-    String description,
+    String productDescription,
     String color,
     Integer size,
     Integer price,
-    Integer stockQuantity
+    Integer quantity
 ) {
 
 }

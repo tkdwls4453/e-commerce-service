@@ -1,14 +1,16 @@
-package com.hanghae.user.infrastructure.client.response;
+package com.hanghae.order.application.client.response;
 
 import lombok.Builder;
 
 @Builder
 public record ItemProductResponse(
+    Long itemId,
     String productName,
     String description,
     String color,
     Integer size,
-    Integer price
+    Integer price,
+    Integer stockQuantity
 ) {
 
 }

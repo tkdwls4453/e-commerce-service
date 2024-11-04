@@ -18,6 +18,8 @@ public class CustomRoute {
                 .uri("lb://user"))
             .route(p-> p.path("/api/products/**")
                 .uri("lb://product"))
+            .route(p-> p.path("/api/orders/**")
+                .uri("lb://order"))
             .build();
     }
 }

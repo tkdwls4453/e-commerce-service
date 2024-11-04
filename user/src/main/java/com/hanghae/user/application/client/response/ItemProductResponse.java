@@ -1,4 +1,4 @@
-package com.hanghae.product.presentation.dto.response;
+package com.hanghae.user.application.client.response;
 
 import lombok.Builder;
 

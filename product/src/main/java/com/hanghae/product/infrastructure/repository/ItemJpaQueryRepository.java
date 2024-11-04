@@ -12,7 +12,7 @@ public interface ItemJpaQueryRepository extends JpaRepository<ItemEntity, Long> 
     @Query(
         """
         SELECT new com.hanghae.product.domain.dto.response.ItemProductDto(
-        p.name, p.description, i.color, i.size, i.price
+        i.id, p.name, p.description, i.color, i.size, i.price, i.stockQuantity
         )
         FROM ItemEntity i
         JOIN i.product p
