@@ -9,7 +9,9 @@ import com.hanghae.order.domain.dto.request.OrderCreateDto;
 import com.hanghae.order.application.client.ItemClient;
 import com.hanghae.order.domain.dto.response.OrderDto;
 import com.hanghae.order.domain.dto.response.OrderItemDto;
+import com.hanghae.order.domain.dto.response.OrderWithSimpleOrderItemsDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderDto;
+import com.hanghae.order.domain.dto.response.SimpleOrderItemDto;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,7 @@ public class OrderService {
 
     private final ItemClient itemClient;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList) {
 
@@ -79,9 +82,11 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public SimpleOrderDto getOrder(Long orderId) {
+    public OrderWithSimpleOrderItemsDto getOrder(Long orderId) {
         Order order = orderRepository.findById(orderId);
+        List<OrderItem> orderItems = orderItemRepository.findAllByOrder(order);
+        List<SimpleOrderItemDto> orderItemDtos = orderItems.stream().map(SimpleOrderItemDto::from).toList();
 
-        return SimpleOrderDto.from(order);
+        return OrderWithSimpleOrderItemsDto.create(order, orderItemDtos);
     }
 }

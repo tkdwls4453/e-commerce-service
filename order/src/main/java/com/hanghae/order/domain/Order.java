@@ -20,15 +20,15 @@ public class Order extends BaseEntity {
 
     private final List<OrderItem> orderItems = new ArrayList<>();
 
-    private final LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
     @Builder
-    private Order(Long id, OrderStatus orderStatus, Long userId, Integer totalPrice, LocalDateTime createTime) {
+    private Order(Long id, OrderStatus orderStatus, Long userId, Integer totalPrice, LocalDateTime createdAt) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.userId = userId;
         this.totalPrice = totalPrice;
-        this.createTime = createTime;
+        this.createdAt = createdAt;
     }
 
     public static Order create(Long userId) {

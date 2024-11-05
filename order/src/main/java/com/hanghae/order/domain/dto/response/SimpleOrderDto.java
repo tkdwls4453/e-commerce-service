@@ -19,7 +19,7 @@ public record SimpleOrderDto(
             .orderStatus(order.getOrderStatus().toString())
             .userId(order.getUserId())
             .totalPrice(order.getTotalPrice())
-            .date(order.getCreateTime().toString())
+            .date(order.getCreatedAt().toString())
             .build();
     }
 }
