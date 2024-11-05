@@ -77,4 +77,11 @@ public class OrderService {
 
         return orders.stream().map(SimpleOrderDto::from).toList();
     }
+
+    @Transactional(readOnly = true)
+    public SimpleOrderDto getOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId);
+
+        return SimpleOrderDto.from(order);
+    }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 public record SimpleOrderResponse(
     Long id,
-    OrderStatus orderStatus,
+    String orderStatus,
     Long userId,
     Integer totalPrice,
     String date

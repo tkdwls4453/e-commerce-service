@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record OrderResponse(
     Long id,
-    OrderStatus orderStatus,
+    String orderStatus,
     Long userId,
     Integer totalPrice,
     List<OrderItemResponse> items
