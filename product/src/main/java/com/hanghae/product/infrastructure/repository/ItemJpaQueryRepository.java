@@ -20,4 +20,14 @@ public interface ItemJpaQueryRepository extends JpaRepository<ItemEntity, Long> 
         """
     )
     List<ItemProductDto> getItemProducts(@Param(value = "itemIds") List<Long> itemIds);
+
+
+    @Query(
+        """
+        SELECT i.stockQuantity
+        FROM ItemEntity i
+        WHERE i.id = :itemId
+        """
+    )
+    Integer getStock(Long itemId);
 }

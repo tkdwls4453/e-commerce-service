@@ -6,4 +6,6 @@ import java.util.List;
 public interface ItemQueryRepository {
 
     List<ItemProductDto> getItemProducts(List<Long> itemIds);
+
+    Integer getStock(Long itemId);
 }
