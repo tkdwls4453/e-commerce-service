@@ -17,4 +17,14 @@ public interface ItemCommandJpaRepository extends JpaRepository<ItemEntity, Long
         """
     )
     void reduceStock(@Param("itemId") Long itemId, @Param("quantity") Integer quantity);
+
+    @Modifying
+    @Query(
+        """
+        UPDATE ItemEntity i
+        SET i.stockQuantity = i.stockQuantity + :quantity
+        WHERE i.id = :itemId
+        """
+    )
+    void increaseStock(@Param("itemId")Long itemId, @Param("quantity") Integer quantity);
 }

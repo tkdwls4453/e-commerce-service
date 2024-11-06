@@ -34,4 +34,12 @@ public class ItemService {
             itemCommandRepository.reduceStock(info.getItemId(), info.getQuantity());
         }
     }
+
+    public void restoreStock(List<Info> infos){
+        for(Info info : infos) {
+            Integer stock = itemQueryRepository.getStock(info.getItemId());
+
+            itemCommandRepository.increaseStock(info.getItemId(), info.getQuantity());
+        }
+    }
 }

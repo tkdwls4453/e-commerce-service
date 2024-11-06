@@ -55,4 +55,12 @@ public class ItemController {
         itemService.reduceStock(request.infos());
         return CustomResponse.success(null);
     }
+
+    @PostMapping("/restore")
+    public CustomResponse<String> restoreStock(
+        @RequestBody ReduceStockRequest request
+    ){
+        itemService.restoreStock(request.infos());
+        return CustomResponse.success(null);
+    }
 }
