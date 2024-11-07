@@ -24,7 +24,11 @@ public class PaymentEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long orderId;
+
+    @Column(nullable = false)
+    private Long userId;
 
     @Column(nullable = false)
     private Integer amount;
@@ -33,9 +37,10 @@ public class PaymentEntity extends BaseEntity {
     private PaymentStatus paymentStatus;
 
     @Builder
-    private PaymentEntity(Long id, Long orderId, Integer amount, PaymentStatus paymentStatus) {
+    private PaymentEntity(Long id, Long orderId, Long userId, Integer amount, PaymentStatus paymentStatus) {
         this.id = id;
         this.orderId = orderId;
+        this.userId = userId;
         this.amount = amount;
         this.paymentStatus = paymentStatus;
     }
@@ -43,6 +48,7 @@ public class PaymentEntity extends BaseEntity {
     public static PaymentEntity from(Payment payment) {
         return PaymentEntity.builder()
             .orderId(payment.getOrderId())
+            .userId(payment.getUserId())
             .amount(payment.getAmount())
             .paymentStatus(payment.getPaymentStatus())
             .build();
@@ -52,10 +58,15 @@ public class PaymentEntity extends BaseEntity {
         return Payment.builder()
             .id(this.id)
             .amount(this.amount)
+            .userId(this.userId)
             .orderId(this.orderId)
             .paymentStatus(this.paymentStatus)
             .createdAt(this.getCreatedAt())
             .updatedAt(this.getUpdatedAt())
             .build();
+    }
+
+    public void updateByDomain(Payment payment) {
+        this.paymentStatus = payment.getPaymentStatus();
     }
 }

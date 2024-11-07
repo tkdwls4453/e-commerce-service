@@ -27,13 +27,14 @@ import lombok.Getter;
 public class Payment {
     private final Long id;
     private final Long orderId;
+    private final Long userId;
     private final Integer amount;
-    private final PaymentStatus paymentStatus;
+    private PaymentStatus paymentStatus;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
     @Builder
-    private Payment(Long id, Long orderId, Integer amount, PaymentStatus paymentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Payment(Long id, Long orderId, Long userId, Integer amount, PaymentStatus paymentStatus, LocalDateTime createdAt, LocalDateTime updatedAt) {
 
         if(amount < 0 ){
             throw new InvalidPriceException();
@@ -41,19 +42,24 @@ public class Payment {
 
         this.id = id;
         this.orderId = orderId;
+        this.userId = userId;
         this.amount = amount;
         this.paymentStatus = paymentStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public static Payment create(Long orderId, Integer amount){
+    public static Payment create(Long orderId,Long userId, Integer amount){
         return Payment.builder()
             .orderId(orderId)
+            .userId(userId)
             .amount(amount)
             .paymentStatus(PaymentStatus.PAYMENT_PENDING)
             .build();
     }
 
+    public void complete() {
+        this.paymentStatus = PaymentStatus.PAYMENT_COMPLETED;
+    }
 }
 
