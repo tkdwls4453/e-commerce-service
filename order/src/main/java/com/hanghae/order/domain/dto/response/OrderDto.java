@@ -9,7 +9,7 @@ import lombok.Builder;
 @Builder
 public record OrderDto (
             Long id,
-            OrderStatus orderStatus,
+            String orderStatus,
             Long userId,
             Integer totalPrice,
             List<OrderItemDto> items
@@ -18,7 +18,7 @@ public record OrderDto (
     public static OrderDto from(Order order, List<OrderItemDto> items) {
         return OrderDto.builder()
             .id(order.getId())
-            .orderStatus(order.getOrderStatus())
+            .orderStatus(order.getOrderStatus().toString())
             .userId(order.getUserId())
             .totalPrice(order.getTotalPrice())
             .items(items)

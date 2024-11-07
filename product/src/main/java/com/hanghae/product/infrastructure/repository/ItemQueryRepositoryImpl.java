@@ -16,4 +16,11 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     public List<ItemProductDto> getItemProducts(List<Long> itemIds) {
         return itemJpaQueryRepository.getItemProducts(itemIds);
     }
+
+    @Override
+    public Integer getStock(Long itemId) {
+        return itemJpaQueryRepository.getStock(itemId);
+    }
+
+
 }

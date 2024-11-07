@@ -53,7 +53,12 @@ public class OrderEntity extends BaseEntity {
             .orderStatus(this.orderStatus)
             .userId(this.userId)
             .totalPrice(this.totalPrice)
-            .createTime(this.getCreatedAt())
+            .createdAt(this.getCreatedAt())
             .build();
+    }
+
+    public void updateByDomain(Order order) {
+        this.orderStatus = order.getOrderStatus();
+        this.totalPrice = order.getTotalPrice();
     }
 }

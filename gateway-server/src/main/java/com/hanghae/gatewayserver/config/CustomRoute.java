@@ -20,6 +20,8 @@ public class CustomRoute {
                 .uri("lb://product"))
             .route(p-> p.path("/api/orders/**")
                 .uri("lb://order"))
+            .route(p-> p.path("/api/payments/**")
+                .uri("lb://payment"))
             .build();
     }
 }

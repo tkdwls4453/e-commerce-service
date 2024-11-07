@@ -4,13 +4,17 @@ import com.hanghae.common.response.CustomResponse;
 import com.hanghae.product.application.ItemService;
 import com.hanghae.product.application.ProductService;
 import com.hanghae.product.domain.dto.response.ItemProductDto;
+import com.hanghae.product.presentation.dto.request.ReduceStockRequest;
 import com.hanghae.product.presentation.dto.response.ItemProductResponse;
 import com.hanghae.product.presentation.dto.response.ItemResponse;
 import com.hanghae.product.presentation.mapper.ItemDtoMapper;
+import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +46,21 @@ public class ItemController {
             .toList();
 
         return CustomResponse.success(result);
+    }
+
+    @PostMapping("/deduct")
+    public CustomResponse<String> reduceStock(
+        @RequestBody ReduceStockRequest request
+    ){
+        itemService.reduceStock(request.infos());
+        return CustomResponse.success(null);
+    }
+
+    @PostMapping("/restore")
+    public CustomResponse<String> restoreStock(
+        @RequestBody ReduceStockRequest request
+    ){
+        itemService.restoreStock(request.infos());
+        return CustomResponse.success(null);
     }
 }

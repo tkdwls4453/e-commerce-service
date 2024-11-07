@@ -7,7 +7,7 @@ import lombok.Builder;
 @Builder
 public record SimpleOrderDto(
     Long id,
-    OrderStatus orderStatus,
+    String orderStatus,
     Long userId,
     Integer totalPrice,
     String date
@@ -16,10 +16,10 @@ public record SimpleOrderDto(
     public static SimpleOrderDto from(Order order){
         return SimpleOrderDto.builder()
             .id(order.getId())
-            .orderStatus(order.getOrderStatus())
+            .orderStatus(order.getOrderStatus().toString())
             .userId(order.getUserId())
             .totalPrice(order.getTotalPrice())
-            .date(order.getCreateTime().toString())
+            .date(order.getCreatedAt().toString())
             .build();
     }
 }

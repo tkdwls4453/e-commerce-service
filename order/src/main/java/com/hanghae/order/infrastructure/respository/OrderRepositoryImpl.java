@@ -4,9 +4,11 @@ import com.hanghae.order.application.port.OrderRepository;
 import com.hanghae.order.domain.Order;
 import com.hanghae.order.domain.OrderItem;
 import com.hanghae.order.domain.OrderStatus;
+import com.hanghae.order.exception.NotFoundOrderException;
 import com.hanghae.order.infrastructure.OrderEntity;
 import com.hanghae.order.infrastructure.OrderItemEntity;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -35,4 +37,21 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderEntities.stream().map(OrderEntity::toDomain).toList();
     }
 
+    @Override
+    public Order findById(Long orderId) {
+        OrderEntity orderEntity = orderJpaRepository.findById(orderId).orElseThrow(
+            NotFoundOrderException::new
+        );
+
+        return orderEntity.toDomain();
+    }
+
+    @Override
+    public void update(Order order) {
+        OrderEntity orderEntity = orderJpaRepository.findById(order.getId()).orElseThrow(
+            NotFoundOrderException::new
+        );
+
+        orderEntity.updateByDomain(order);
+    }
 }
