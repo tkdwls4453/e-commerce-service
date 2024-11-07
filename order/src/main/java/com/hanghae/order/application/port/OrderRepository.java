@@ -11,4 +11,6 @@ public interface OrderRepository {
     List<Order> findByUserIdAndStatusIsNotPending(Integer userId);
 
     Order findById(Long orderId);
+
+    void update(Order order);
 }

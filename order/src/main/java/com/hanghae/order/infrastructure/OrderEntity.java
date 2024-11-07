@@ -56,4 +56,9 @@ public class OrderEntity extends BaseEntity {
             .createdAt(this.getCreatedAt())
             .build();
     }
+
+    public void updateByDomain(Order order) {
+        this.orderStatus = order.getOrderStatus();
+        this.totalPrice = order.getTotalPrice();
+    }
 }

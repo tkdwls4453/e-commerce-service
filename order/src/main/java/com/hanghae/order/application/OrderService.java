@@ -89,4 +89,11 @@ public class OrderService {
 
         return OrderWithSimpleOrderItemsDto.create(order, orderItemDtos);
     }
+
+    public void advanceOrderStatus(Long orderId) {
+        Order order = orderRepository.findById(orderId);
+        order.advanceStatus();
+
+        orderRepository.update(order);
+    }
 }

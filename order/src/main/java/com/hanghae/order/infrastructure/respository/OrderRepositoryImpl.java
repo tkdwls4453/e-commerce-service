@@ -45,4 +45,13 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         return orderEntity.toDomain();
     }
+
+    @Override
+    public void update(Order order) {
+        OrderEntity orderEntity = orderJpaRepository.findById(order.getId()).orElseThrow(
+            NotFoundOrderException::new
+        );
+
+        orderEntity.updateByDomain(order);
+    }
 }

@@ -69,4 +69,17 @@ public class Order extends BaseEntity {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public void advanceStatus() {
+        switch (orderStatus) {
+            case PAYMENT_PENDING:
+                this.orderStatus = OrderStatus.PREPARING;
+                break;
+            case PREPARING:
+                this.orderStatus = OrderStatus.SHIPPING;
+                break;
+            case SHIPPING:
+                this.orderStatus = OrderStatus.DELIVERED;
+        }
+    }
 }
