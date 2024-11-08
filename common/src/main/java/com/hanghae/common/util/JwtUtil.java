@@ -33,11 +33,10 @@ public class JwtUtil {
         }
     }
 
-    public String createJwt(String email, String role, Long expiredMs) {
+    public String createJwt(Long userId, Long expiredMs) {
 
         return Jwts.builder()
-            .claim("email", email)
-            .claim("role", role)
+            .claim("userId", userId)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + expiredMs))
             .signWith(secretKey)

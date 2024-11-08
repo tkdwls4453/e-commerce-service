@@ -31,8 +31,4 @@ public class UserController {
 
         return CustomResponse.success(UserDtoMapper.toUserSimpleInfoResponse(result));
     }
-    @GetMapping
-    public String healthCheck(){
-        return "hello";
-    }
 }
