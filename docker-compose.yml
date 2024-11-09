@@ -14,6 +14,19 @@ services:
     networks:
       - my-network
 
+  rabbitmq:
+    image: tkdwls4453/rabbitmq-delay:latest
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "25672:15672"
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: guest  # 필요에 따라 사용자 이름 설정
+      RABBITMQ_DEFAULT_PASS: guest  # 필요에 따라 비밀번호 설정
+    networks:
+      - my-network
+
 #  user-service:
 #    build:
 #      context: .
@@ -29,24 +42,13 @@ services:
 #      - "8081:8080"
 #    depends_on:
 #      - mysql-db
+#      - rabbitmq
 #    networks:
 #      - my-network
 
-  rabbitmq:
-    image: rabbitmq:latest
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - my-network
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
-
-
 volumes:
   mysql-data:
+  rabbitmq_data:
 
 networks:
   my-network:
