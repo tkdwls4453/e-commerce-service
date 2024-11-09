@@ -7,3 +7,5 @@ include 'payment'
 include 'config-server'
 include 'eureka-server'
 include 'gateway-server'
+include 'jwt'
+

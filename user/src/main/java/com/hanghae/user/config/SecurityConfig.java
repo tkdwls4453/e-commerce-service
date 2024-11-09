@@ -2,7 +2,7 @@ package com.hanghae.user.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hanghae.common.util.JwtUtil;
+import com.hanghae.jwt.JwtUtil;
 import com.hanghae.user.application.CustomUserDetailsService;
 import com.hanghae.user.infrastructure.filter.AuthenticationFilter;
 import jakarta.servlet.Filter;

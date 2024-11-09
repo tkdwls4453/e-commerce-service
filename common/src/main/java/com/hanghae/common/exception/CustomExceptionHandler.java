@@ -20,5 +20,4 @@ public class CustomExceptionHandler {
             .status(e.getHttpStatus())
             .body(CustomResponse.failure(e.getCode(), e.getMessage()));
     }
-
 }

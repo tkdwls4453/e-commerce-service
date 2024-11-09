@@ -2,7 +2,7 @@ package com.hanghae.user.infrastructure.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghae.common.response.CustomResponse;
-import com.hanghae.common.util.JwtUtil;
+import com.hanghae.jwt.JwtUtil;
 import com.hanghae.user.application.CustomUserDetailsService;
 import com.hanghae.user.domain.dto.request.UserLoginDto;
 import com.hanghae.user.exception.InvalidLoginException;
