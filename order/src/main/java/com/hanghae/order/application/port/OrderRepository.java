@@ -8,7 +8,7 @@ public interface OrderRepository {
 
     Order save(Order order);
 
-    List<Order> findByUserIdAndStatusIsNotPending(Integer userId);
+    List<Order> findByUserIdAndStatusIsNotPending(Long userId);
 
     Order findById(Long orderId);
 

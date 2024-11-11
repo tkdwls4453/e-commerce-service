@@ -31,7 +31,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findByUserIdAndStatusIsNotPending(Integer userId) {
+    public List<Order> findByUserIdAndStatusIsNotPending(Long userId) {
         List<OrderEntity> orderEntities = orderJpaRepository.findByUserIdAndOrderStatusNot(userId, OrderStatus.PAYMENT_PENDING);
 
         return orderEntities.stream().map(OrderEntity::toDomain).toList();

@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableFeignClients
 @EnableWebSecurity
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.hanghae.user", "com.hanghae.common"})
+@ComponentScan(basePackages = {"com.hanghae.user", "com.hanghae.common", "com.hanghae.jwt"})
 public class UserApplication {
 
     public static void main(String[] args){

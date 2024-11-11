@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userWriteService;
@@ -30,9 +30,5 @@ public class UserController {
         UserSimpleInfo result = userWriteService.createUser(userCreate);
 
         return CustomResponse.success(UserDtoMapper.toUserSimpleInfoResponse(result));
-    }
-    @GetMapping
-    public String healthCheck(){
-        return "hello";
     }
 }

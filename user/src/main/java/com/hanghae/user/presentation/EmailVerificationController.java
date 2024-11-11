@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/auth/email-verification")
+@RequestMapping("/auth/email-verification")
 public class EmailVerificationController {
 
     private final EmailVerificationService emailService;

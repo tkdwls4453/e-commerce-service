@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/users")
-public class CartItemController {
+@RequestMapping("/users")
+public class ExternalCartItemController {
     private final UserCartService userCartService;
 
     @PostMapping("/{userId}/cart-items")
