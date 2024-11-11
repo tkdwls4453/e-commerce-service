@@ -1,4 +1,4 @@
-package com.hanghae.payment.application.client.request;
+package com.hanghae.order.application.client.request;
 
 import java.util.List;
 import lombok.Builder;

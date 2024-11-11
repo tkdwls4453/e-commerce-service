@@ -1,5 +1,7 @@
 package com.hanghae.order.application;
 
+import com.hanghae.order.application.client.request.ReduceStockRequest;
+import com.hanghae.order.application.client.request.ReduceStockRequest.Info;
 import com.hanghae.order.application.client.response.ItemProductResponse;
 import com.hanghae.order.application.port.OrderItemRepository;
 import com.hanghae.order.application.port.OrderRepository;
@@ -12,6 +14,8 @@ import com.hanghae.order.domain.dto.response.OrderItemDto;
 import com.hanghae.order.domain.dto.response.OrderWithSimpleOrderItemsDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderItemDto;
+import com.hanghae.order.exception.InvalidOrderRequest;
+import com.hanghae.order.presentation.response.SimpleOrderItemResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +51,7 @@ public class OrderService {
         for(OrderCreateDto orderCreateDto : orderCreateDtoList) {
             quantityMap.put(orderCreateDto.itemId(), orderCreateDto.quantity());
         }
+
         // 아이템 아이디로 아이템 조회 (product service 에 feign client)
         List<Long> itemIds = orderCreateDtoList.stream().map(OrderCreateDto::itemId).toList();
 
@@ -58,13 +63,37 @@ public class OrderService {
         // orderItem 리스트 내용으로 order 생성
         Order order = Order.create(userId);
 
+        // 재고 감소 정보를 담기 위한 리스트
+        List<Info> infos = new ArrayList<>();
+
         // 아이템 내용과 수량 내용으로 orderItem 생성
         for(int i=0; i<itemIds.size(); i++) {
-            ItemProductResponse info = itemAndProductInfo.get(i);
-            OrderCreateDto orderCreateDto = orderCreateDtoList.get(i);
-            OrderItem orderItem = OrderItem.create(orderCreateDto.quantity(), info.price(), info.itemId());
+            ItemProductResponse realItemInfo = itemAndProductInfo.get(i);
+            OrderCreateDto orderItemInfo = orderCreateDtoList.get(i);
+
+            if(!orderItemInfo.isValidOrder(realItemInfo)){
+                throw new InvalidOrderRequest();
+            }
+
+            OrderItem orderItem = OrderItem.create(orderItemInfo.quantity(), realItemInfo.price(), realItemInfo.itemId());
+
             orderItems.add(orderItem);
+
+            // 재고 감소 정보를 모아둔다.
+            infos.add(
+                Info.builder()
+                    .itemId(realItemInfo.itemId())
+                    .quantity(orderItemInfo.quantity())
+                    .build()
+            );
         }
+
+        // 재고 감소 요청 (아이템 아이디, 주문량)
+        itemClient.reduceStock(
+            ReduceStockRequest.builder()
+                .infos(infos)
+                .build()
+        );
 
         order.addOrderItem(orderItems);
         List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(response -> OrderItemDto.from(response, quantityMap)).toList();

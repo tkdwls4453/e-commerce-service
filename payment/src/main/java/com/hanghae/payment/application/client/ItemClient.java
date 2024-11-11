@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name="product", url = "http://localhost:8080/internal/products/items")
 public interface ItemClient {
 
-    @PostMapping("/deduct")
-    CustomResponse<String> reduceStock(@RequestBody ReduceStockRequest request);
-
     @PostMapping("/restore")
     CustomResponse<String> restoreStock(@RequestBody RestoreStockRequest request);
 }

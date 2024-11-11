@@ -57,24 +57,6 @@ public class PaymentService {
         // 주문 정보 조회 (주문 아이템들의 주문량 포함)
         OrderWithSimpleOrderItemsResponse data = orderClient.readOrder(orderId).getData();
 
-        List<Info> infos = new ArrayList<>();
-
-        for(SimpleOrderItemResponse item : data.orderItems()) {
-            infos.add(
-                Info.builder()
-                    .itemId(item.itemId())
-                    .quantity(item.quantity())
-                    .build()
-            );
-        }
-
-        // 재고 감소 요청 (아이템 아이디, 주문량)
-        itemClient.reduceStock(
-            ReduceStockRequest.builder()
-                .infos(infos)
-            .build()
-        );
-
         // 결제 정보 생성후 저장
         Payment payment = Payment.create(orderId, userId, data.totalPrice());
         Payment savedPayment = paymentRepository.save(payment);
