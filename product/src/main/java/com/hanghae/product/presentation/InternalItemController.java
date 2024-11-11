@@ -7,6 +7,7 @@ import com.hanghae.product.domain.dto.response.ItemProductDto;
 import com.hanghae.product.presentation.dto.request.ReduceStockRequest;
 import com.hanghae.product.presentation.dto.response.ItemProductResponse;
 import com.hanghae.product.presentation.mapper.ItemDtoMapper;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class InternalItemController {
     @PostMapping("/deduct")
     public CustomResponse<String> reduceStock(
         @RequestBody ReduceStockRequest request
-    ){
+    ) throws IOException {
         itemService.reduceStock(request.infos());
         return CustomResponse.success(null);
     }

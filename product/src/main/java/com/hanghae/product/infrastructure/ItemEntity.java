@@ -1,6 +1,7 @@
 package com.hanghae.product.infrastructure;
 
 import com.hanghae.common.infrastructure.BaseEntity;
+import com.hanghae.product.domain.Item;
 import com.hanghae.product.domain.ItemStatus;
 import com.hanghae.product.domain.dto.response.ItemDto;
 import com.hanghae.product.domain.dto.response.ItemInfoDto;
@@ -62,4 +63,15 @@ public class ItemEntity extends BaseEntity {
             .stockQuantity(this.stockQuantity)
             .build();
     }
+
+    public Item toDomain(){
+        return Item.builder()
+            .id(this.id)
+            .color(this.color)
+            .size(this.size)
+            .stockQuantity(this.stockQuantity)
+            .price(this.price)
+            .build();
+    }
+
 }
