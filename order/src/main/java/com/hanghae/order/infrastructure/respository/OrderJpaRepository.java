@@ -18,5 +18,5 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
           order by o.createdAt desc
           """
     )
-    List<OrderEntity> findByUserIdAndOrderStatusNot(@Param("userId") Integer userId, @Param("status") OrderStatus status);
+    List<OrderEntity> findByUserIdAndOrderStatusNot(@Param("userId") Long userId, @Param("status") OrderStatus status);
 }

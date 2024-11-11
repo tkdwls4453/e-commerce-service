@@ -75,7 +75,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<SimpleOrderDto> getOrders(Integer userId) {
+    public List<SimpleOrderDto> getOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserIdAndStatusIsNotPending(userId);
 
         return orders.stream().map(SimpleOrderDto::from).toList();

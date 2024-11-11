@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,16 +30,16 @@ public class OrderController {
 
     @PostMapping
     public CustomResponse<OrderDetailResponse> createOrder(
-        @RequestBody OrderCreateRequest orderCreateRequest
+        @RequestBody OrderCreateRequest orderCreateRequest,
+        @RequestHeader("X-User-Id") Long userId
     ){
-        OrderDto orderDto = orderService.createOrder(orderCreateRequest.userId(),
-            orderCreateRequest.infos());
+        OrderDto orderDto = orderService.createOrder(userId, orderCreateRequest.infos());
         return CustomResponse.success(OrderDtoMapper.toOrderResponse(orderDto));
     }
 
     @GetMapping
     public CustomResponse<List<OrderResponse>> readOrders(
-        @RequestParam Integer userId
+        @RequestHeader("X-User-Id") Long userId
     ){
         List<OrderResponse> body = orderService.getOrders(userId).stream().map(OrderDtoMapper::toSimpleOrderResponse).toList();
 
