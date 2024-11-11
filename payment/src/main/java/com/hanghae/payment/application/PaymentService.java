@@ -3,8 +3,6 @@ package com.hanghae.payment.application;
 import com.hanghae.common.response.CustomResponse;
 import com.hanghae.payment.application.client.ItemClient;
 import com.hanghae.payment.application.client.OrderClient;
-import com.hanghae.payment.application.client.request.ReduceStockRequest;
-import com.hanghae.payment.application.client.request.ReduceStockRequest.Info;
 import com.hanghae.payment.application.client.request.RestoreStockRequest;
 import com.hanghae.payment.application.client.response.OrderWithSimpleOrderItemsResponse;
 import com.hanghae.payment.application.client.response.SimpleOrderItemResponse;
