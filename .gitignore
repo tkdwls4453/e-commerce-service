@@ -133,3 +133,5 @@ config-server/src/main/resources/application.properties
 *.properties
 
 order/HELP.md
+
+dump.rdb

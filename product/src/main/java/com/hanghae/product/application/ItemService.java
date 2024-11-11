@@ -22,6 +22,7 @@ public class ItemService {
     private final ItemQueryRepository itemQueryRepository;
     private final ItemCommandRepository itemCommandRepository;
     private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, Integer> redisStockTemplate;
     private final RedisScript<String> stockDecreaseScript;
 
     @Transactional(readOnly = true)
@@ -62,9 +63,10 @@ public class ItemService {
 
     public void restoreStock(List<Info> infos){
         for(Info info : infos) {
+            String key = "item" + info.getItemId() + ":stock";
             Integer stock = itemQueryRepository.getStock(info.getItemId());
 
-            itemCommandRepository.increaseStock(info.getItemId(), info.getQuantity());
+            redisStockTemplate.opsForValue().increment(key, info.getQuantity());
         }
     }
 }
