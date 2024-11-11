@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name="product", url = "http://localhost:8080/api/products/items")
+@FeignClient(name="product", url = "http://localhost:8080/internal/products/items")
 public interface ItemClient {
 
     @PostMapping("/deduct")

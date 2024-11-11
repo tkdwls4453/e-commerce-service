@@ -12,15 +12,15 @@ public class CustomRoute {
     public RouteLocator cRoute(RouteLocatorBuilder builder) {
 
         return builder.routes()
-            .route(p -> p.path("/api/users/**")
+            .route(p -> p.path("/users/**", "/internal/users/**")
                 .uri("lb://user"))
-            .route(p-> p.path("/api/auth/**")
+            .route(p -> p.path("/auth/**", "/internal/auth/**")
                 .uri("lb://user"))
-            .route(p-> p.path("/api/products/**")
+            .route(p -> p.path("/products/**", "/internal/products/**")
                 .uri("lb://product"))
-            .route(p-> p.path("/api/orders/**")
+            .route(p -> p.path("/orders/**", "/internal/orders/**")
                 .uri("lb://order"))
-            .route(p-> p.path("/api/payments/**")
+            .route(p -> p.path("/payments/**", "/internal/payments/**")
                 .uri("lb://payment"))
             .build();
     }

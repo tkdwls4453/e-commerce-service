@@ -8,7 +8,6 @@ import com.hanghae.product.presentation.dto.request.ReduceStockRequest;
 import com.hanghae.product.presentation.dto.response.ItemProductResponse;
 import com.hanghae.product.presentation.dto.response.ItemResponse;
 import com.hanghae.product.presentation.mapper.ItemDtoMapper;
-import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,46 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/products/items")
-public class ItemController {
+@RequestMapping("/products/items")
+public class ExternalItemController {
 
     private final ProductService productService;
-    private final ItemService itemService;
 
     @GetMapping("/{itemId}")
     public CustomResponse<ItemResponse> getItemInfo(
         @PathVariable(value = "itemId") Long itemId
     ) {
         return CustomResponse.success(ItemDtoMapper.toItemResponse(productService.getItemInfo(itemId)));
-    }
-
-    @GetMapping
-    public CustomResponse<List<ItemProductResponse>> getItemProducts(
-        @RequestParam("itemIds") List<Long> itemIds
-    ) {
-        List<ItemProductDto> itemProductDtos = itemService.getItemProducts(itemIds);
-
-        List<ItemProductResponse> result = itemProductDtos.stream().map(
-                ItemDtoMapper::toItemProductResponse
-            )
-            .toList();
-
-        return CustomResponse.success(result);
-    }
-
-    @PostMapping("/deduct")
-    public CustomResponse<String> reduceStock(
-        @RequestBody ReduceStockRequest request
-    ){
-        itemService.reduceStock(request.infos());
-        return CustomResponse.success(null);
-    }
-
-    @PostMapping("/restore")
-    public CustomResponse<String> restoreStock(
-        @RequestBody ReduceStockRequest request
-    ){
-        itemService.restoreStock(request.infos());
-        return CustomResponse.success(null);
     }
 }
