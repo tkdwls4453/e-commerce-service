@@ -54,4 +54,14 @@ public class FakeProductQueryRepository implements ProductQueryRepository {
         return null;
     }
 
+    @Override
+    public boolean existsById(Long productId) {
+        return false;
+    }
+
+    @Override
+    public boolean existsByIdAndActive(Long productId) {
+        return false;
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.hanghae.product.infrastructure.repository;
 
 import com.hanghae.product.application.port.ItemQueryRepository;
+import com.hanghae.product.domain.Item;
 import com.hanghae.product.domain.dto.response.ItemProductDto;
+import com.hanghae.product.infrastructure.ItemEntity;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,6 +22,11 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     @Override
     public Integer getStock(Long itemId) {
         return itemJpaQueryRepository.getStock(itemId);
+    }
+
+    @Override
+    public List<Item> findAll() {
+        return itemJpaQueryRepository.findAll().stream().map(ItemEntity::toDomain).toList();
     }
 
 
