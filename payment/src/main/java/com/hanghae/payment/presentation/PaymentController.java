@@ -8,6 +8,7 @@ import com.hanghae.payment.presentation.response.PaymentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class PaymentController {
 
     @PostMapping("/attempt")
     public CustomResponse<PaymentResponse> attemptPayment(
-        @RequestParam(name = "userId") Long userId,
+        @RequestHeader("X-User-Id") Long userId,
         @RequestParam(name = "orderId") Long orderId
     ){
         PaymentDto paymentDto = paymentService.create(userId, orderId);
@@ -31,7 +32,7 @@ public class PaymentController {
 
     @PostMapping("/{paymentId}")
     public CustomResponse<String> submitPayment(
-        @RequestParam(name = "userId") Long userId,
+        @RequestHeader("X-User-Id") Long userId,
         @RequestParam(name = "resultCode") String resultCode,
         @PathVariable(name = "paymentId") Long paymentId
     ){

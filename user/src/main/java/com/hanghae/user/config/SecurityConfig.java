@@ -62,7 +62,7 @@ public class SecurityConfig {
             authenticationManager(authenticationConfiguration), jwtUtil, objectMapper, customUserDetailsService
         );
 
-        authenticationFilter.setFilterProcessesUrl("/api/users/login");
+        authenticationFilter.setFilterProcessesUrl("/users/login");
 
         return authenticationFilter;
     }
