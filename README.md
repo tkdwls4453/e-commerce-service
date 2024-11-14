@@ -30,9 +30,61 @@
 - **주문 단계 자동 처리 기능**
     - 주문 상태가 24시간 후에 자동으로 다음 단계로 넘어갑니다.
     - 준비중 → 배송중 → 배송완료
+---
 
 ### 유저 플로우
  ![Blank diagram](https://github.com/user-attachments/assets/22bb4a65-e98a-421f-929c-50301307aa4d)
+ 
+
+### ERD (Entity-Relationship Diagram)
+![e-commerce](https://github.com/user-attachments/assets/4c440bf9-d1b9-4cf9-a23d-6582151e770b)
+
+
 
 ### 아키텍처
 ![ecommerce drawio](https://github.com/user-attachments/assets/bb6e97ff-ecb3-4072-84ec-ba3dac7bfcdd)
+
+- ```API Gateway Server```: 라우팅, JWT 검증
+- ```User Service```: 로그인, 장바구니, 이메일 인증 처리
+- ```Product Service```: 상품/아이템 조회, 아이템 재고 차감/복구
+- ```Order Service```: 주문 조회, 주문 생성 및 상태 관리
+- ```Payment Service```: 결제 정보 저장
+
+---
+### 기술 스택
+- `Spring Boot3` `Java21` `Gradle`
+- `Jpa` `Redis` `RabbitMQ` `MySQL`
+- `Spring Cloud Gateway` `Eureka` `Feign Client`
+- `Postman` `Docker` 
+
+---
+
+### 설치 및 실행 방법
+1. 프로젝트를 다운받습니다.
+<img width="393" alt="Screenshot 2024-11-14 at 10 06 08 PM" src="https://github.com/user-attachments/assets/da5abb13-0f02-4980-b076-6fbfe277d853">
+
+  
+2. 터미널에서 명령어 실행하여 인프라와 서비스들을 실행시킵니다.
+   ```
+   docker compose up -d
+   ```
+   
+3. [API 문서] 기반으로 api 를 테스트합니다.
+   <포스트맨 API 문서 링크 걸 예정>
+
+---
+
+### 버전별 이슈 및 트러블 슈팅
+- **v1: 서비스 기획 및 기본 기능 개발**
+    - 주문 및 결제 프로세스 고민 -> 블로그 정리 후 링크 예정
+    - 재고 동시성 이슈
+    - 주문 단계 자동 처리 방식 고민
+
+- **v2: 성능 측정 및 개선**
+    - 작성 예정
+---
+
+### 버전 히스토리
+
+* [x] v1: 서비스 기획 및 기본 기능 개발 (2024.11.12)
+* [ ] v2: 성능 측정 및 개선 (진행중)
