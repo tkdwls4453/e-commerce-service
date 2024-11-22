@@ -9,14 +9,14 @@ COPY . .
 RUN chmod +x ./gradlew
 
 # Gradle Wrapper를 사용하여 빌드합니다.
-RUN ./gradlew :product:bootJar --no-daemon
+RUN ./gradlew :order:bootJar --no-daemon
 
 # 런타임 이미지를 위한 설정
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
 # build 단계에서 생성된 JAR 파일을 복사합니다.
-COPY --from=builder /app/product/build/libs/product-*.jar app.jar
+COPY --from=builder /app/order/build/libs/order-*.jar app.jar
 
 # 애플리케이션을 실행합니다.
 ENTRYPOINT ["java", "-jar", "app.jar"]
