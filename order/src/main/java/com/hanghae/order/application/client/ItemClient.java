@@ -1,8 +1,10 @@
 package com.hanghae.order.application.client;
 
+import ch.qos.logback.core.spi.ConfigurationEvent;
 import com.hanghae.common.response.CustomResponse;
 import com.hanghae.order.application.client.request.ReduceStockRequest;
 import com.hanghae.order.application.client.response.ItemProductResponse;
+import com.hanghae.order.domain.dto.request.OrderCreateDto;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,4 +20,7 @@ public interface ItemClient {
 
     @PostMapping("/deduct")
     CustomResponse<String> reduceStock(@RequestBody ReduceStockRequest request);
+
+    @PostMapping("/deduct")
+    CustomResponse<List<ItemProductResponse>> reduceStockAndGetInfo(@RequestBody ReduceStockRequest request);
 }

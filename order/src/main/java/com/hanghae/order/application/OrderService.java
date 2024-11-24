@@ -46,17 +46,19 @@ public class OrderService {
 
     public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList) {
 
-        Map<Long, Integer> quantityMap = new HashMap<>();
+        List<Info> infos = orderCreateDtoList.stream()
+            .map(orderCreateDto -> Info.builder()
+                .itemId(orderCreateDto.itemId())
+                .quantity(orderCreateDto.quantity())
+                .build())
+            .toList();
 
-        for(OrderCreateDto orderCreateDto : orderCreateDtoList) {
-            quantityMap.put(orderCreateDto.itemId(), orderCreateDto.quantity());
-        }
+        ReduceStockRequest reduceStockRequest = ReduceStockRequest.builder()
+            .infos(infos)
+            .build();
 
-        // 아이템 아이디로 아이템 조회 (product service 에 feign client)
-        List<Long> itemIds = orderCreateDtoList.stream().map(OrderCreateDto::itemId).toList();
-
-        List<ItemProductResponse> itemAndProductInfo = itemClient.getItemProducts(itemIds).getData();
-        System.out.println(itemAndProductInfo);
+        // 재고 감소 및 아이템 정보 요청 (아이템 아이디, 주문량) -> Feign Client
+        List<ItemProductResponse> itemAndProductInfo = itemClient.reduceStockAndGetInfo(reduceStockRequest).getData();
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -64,10 +66,9 @@ public class OrderService {
         Order order = Order.create(userId);
 
         // 재고 감소 정보를 담기 위한 리스트
-        List<Info> infos = new ArrayList<>();
 
         // 아이템 내용과 수량 내용으로 orderItem 생성
-        for(int i=0; i<itemIds.size(); i++) {
+        for(int i=0; i<itemAndProductInfo.size(); i++) {
             ItemProductResponse realItemInfo = itemAndProductInfo.get(i);
             OrderCreateDto orderItemInfo = orderCreateDtoList.get(i);
 
@@ -76,27 +77,11 @@ public class OrderService {
             }
 
             OrderItem orderItem = OrderItem.create(orderItemInfo.quantity(), realItemInfo.price(), realItemInfo.itemId());
-
             orderItems.add(orderItem);
-
-            // 재고 감소 정보를 모아둔다.
-            infos.add(
-                Info.builder()
-                    .itemId(realItemInfo.itemId())
-                    .quantity(orderItemInfo.quantity())
-                    .build()
-            );
         }
 
-        // 재고 감소 요청 (아이템 아이디, 주문량)
-        itemClient.reduceStock(
-            ReduceStockRequest.builder()
-                .infos(infos)
-                .build()
-        );
-
         order.addOrderItem(orderItems);
-        List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(response -> OrderItemDto.from(response, quantityMap)).toList();
+        List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(response -> OrderItemDto.from(response, orderCreateDtoList)).toList();
 
         // order 와 orderItem 을 데이터베이스에 저장
         Order savedOrder = orderRepository.save(order);
