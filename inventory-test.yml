@@ -7,7 +7,7 @@ config:
       name: Warm Up
     - duration: 300       # 30초 동안
       arrivalRate: 50   # 초당 200개의 요청 유지
-      rampTo: 300        # 초당 500개의 요청까지 다시 증가
+      rampTo: 500        # 초당 300개의 요청까지 다시 증가
       name: Ramp Up Load
 
 scenarios:
@@ -16,7 +16,7 @@ scenarios:
           url: "/orders"  # API 엔드포인트
           headers:
             Content-Type: "application/json"  # JSON 형식 요청
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczMjQ0OTk4NiwiZXhwIjoxNzMyNTM2Mzg2fQ.oWKZpAbD0kL91qF_JOCUCMWoQfdQiwTaRu0Jaw7TiZM"
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczMjYwMzE2NiwiZXhwIjoxNzMyNjg5NTY2fQ.Paugsx1696G6dbBtczueFsLjWjwk5WJWgeKq_zf-wI8"
           json:
             infos:
               - itemId: 1
