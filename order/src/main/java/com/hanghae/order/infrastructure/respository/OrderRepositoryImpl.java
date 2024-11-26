@@ -1,5 +1,6 @@
 package com.hanghae.order.infrastructure.respository;
 
+import com.hanghae.common.annotation.RepositoryLogExecutionTime;
 import com.hanghae.order.application.port.OrderRepository;
 import com.hanghae.order.domain.Order;
 import com.hanghae.order.domain.OrderItem;
@@ -19,12 +20,13 @@ public class OrderRepositoryImpl implements OrderRepository {
     private final OrderJpaRepository orderJpaRepository;
     private final OrderItemJpaRepository orderItemJpaRepository;
 
+    @RepositoryLogExecutionTime
     @Override
     public Order save(Order order) {
 
         OrderEntity orderEntity = orderJpaRepository.save(OrderEntity.from(order));
         for(OrderItem item : order.getOrderItems()) {
-            OrderItemEntity orderItemEntity = orderItemJpaRepository.save(OrderItemEntity.from(item, orderEntity));
+            orderItemJpaRepository.save(OrderItemEntity.from(item, orderEntity));
         }
 
         return orderEntity.toDomain();

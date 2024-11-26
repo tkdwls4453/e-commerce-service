@@ -7,13 +7,10 @@ import com.hanghae.order.presentation.mapper.OrderDtoMapper;
 import com.hanghae.order.presentation.request.OrderCreateRequest;
 import com.hanghae.order.presentation.response.OrderDetailResponse;
 import com.hanghae.order.presentation.response.OrderResponse;
-import com.hanghae.order.presentation.response.OrderWithSimpleOrderItemsResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +28,7 @@ public class ExternalOrderController {
         @RequestBody OrderCreateRequest orderCreateRequest,
         @RequestHeader("X-User-Id") Long userId
     ){
+
         OrderDto orderDto = orderService.createOrder(userId, orderCreateRequest.infos());
         return CustomResponse.success(OrderDtoMapper.toOrderResponse(orderDto));
     }

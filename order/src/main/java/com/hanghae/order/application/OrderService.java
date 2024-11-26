@@ -1,5 +1,6 @@
 package com.hanghae.order.application;
 
+import com.hanghae.common.annotation.ServiceLogExecutionTime;
 import com.hanghae.order.application.client.request.ReduceStockRequest;
 import com.hanghae.order.application.client.request.ReduceStockRequest.Info;
 import com.hanghae.order.application.client.response.ItemProductResponse;
@@ -15,11 +16,8 @@ import com.hanghae.order.domain.dto.response.OrderWithSimpleOrderItemsDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderItemDto;
 import com.hanghae.order.exception.InvalidOrderRequest;
-import com.hanghae.order.presentation.response.SimpleOrderItemResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -44,6 +42,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
 
+    @ServiceLogExecutionTime
     public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList) {
 
         List<Info> infos = orderCreateDtoList.stream()
@@ -65,7 +64,6 @@ public class OrderService {
         // orderItem 리스트 내용으로 order 생성
         Order order = Order.create(userId);
 
-        // 재고 감소 정보를 담기 위한 리스트
 
         // 아이템 내용과 수량 내용으로 orderItem 생성
         for(int i=0; i<itemAndProductInfo.size(); i++) {
