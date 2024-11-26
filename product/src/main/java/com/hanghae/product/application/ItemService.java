@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
 
     private final ItemQueryRepository itemQueryRepository;
-    private final ItemCommandRepository itemCommandRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final RedisTemplate<String, Integer> redisStockTemplate;
     private final RedisScript<String> stockDecreaseScript;
