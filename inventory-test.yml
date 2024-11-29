@@ -1,13 +1,13 @@
 config:
   target: "http://localhost:8080"  # API 서버 URL
   phases:
-    - duration: 30       # 30초 동안
+    - duration: 60       # 30초 동안
       arrivalRate: 10    # 초당 50개의 요청으로 시작
-      rampTo: 50
+      rampTo: 100
       name: Warm Up
     - duration: 300       # 30초 동안
-      arrivalRate: 50   # 초당 200개의 요청 유지
-      rampTo: 500        # 초당 300개의 요청까지 다시 증가
+      arrivalRate: 500   # 초당 200개의 요청 유지
+#      rampTo: 600        # 초당 300개의 요청까지 다시 증가
       name: Ramp Up Load
 
 scenarios:
@@ -16,7 +16,7 @@ scenarios:
           url: "/orders"  # API 엔드포인트
           headers:
             Content-Type: "application/json"  # JSON 형식 요청
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczMjYwMzE2NiwiZXhwIjoxNzMyNjg5NTY2fQ.Paugsx1696G6dbBtczueFsLjWjwk5WJWgeKq_zf-wI8"
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczMjg3OTgwNywiZXhwIjoxNzMyOTY2MjA3fQ.29kNCJKpexJHwFa2Y6mYwCncf1K1rlsTkCIpiSJ7Eyo"
           json:
             infos:
               - itemId: 1

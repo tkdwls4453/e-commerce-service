@@ -26,7 +26,6 @@ public class ItemDtoMapper {
             .color(dto.color())
             .size(dto.size())
             .price(dto.price())
-            .stockQuantity(dto.stockQuantity())
             .build();
     }
 }

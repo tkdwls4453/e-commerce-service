@@ -7,6 +7,7 @@ import com.hanghae.order.presentation.mapper.OrderDtoMapper;
 import com.hanghae.order.presentation.request.OrderCreateRequest;
 import com.hanghae.order.presentation.response.OrderDetailResponse;
 import com.hanghae.order.presentation.response.OrderResponse;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,7 @@ public class ExternalOrderController {
     public CustomResponse<OrderDetailResponse> createOrder(
         @RequestBody OrderCreateRequest orderCreateRequest,
         @RequestHeader("X-User-Id") Long userId
-    ){
+    ) throws IOException {
 
         OrderDto orderDto = orderService.createOrder(userId, orderCreateRequest.infos());
         return CustomResponse.success(OrderDtoMapper.toOrderResponse(orderDto));

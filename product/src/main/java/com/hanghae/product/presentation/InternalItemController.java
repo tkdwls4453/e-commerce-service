@@ -45,20 +45,20 @@ public class InternalItemController {
 //        return CustomResponse.success(null);
 //    }
 
-    @PostMapping("/deduct")
-    public CustomResponse<List<ItemProductResponse>> reduceStockAndGetInfo(
-        @RequestBody ReduceStockRequest request
-    ) throws IOException {
-
-        List<ItemProductDto> itemProductDtos = itemService.reduceStock(request.infos());
-
-        List<ItemProductResponse> result = itemProductDtos.stream().map(
-                ItemDtoMapper::toItemProductResponse
-            )
-            .toList();
-
-        return CustomResponse.success(result);
-    }
+//    @PostMapping("/deduct")
+//    public CustomResponse<List<ItemProductResponse>> reduceStockAndGetInfo(
+//        @RequestBody ReduceStockRequest request
+//    ) throws IOException {
+//
+//        List<ItemProductDto> itemProductDtos = itemService.reduceStock(request.infos());
+//
+//        List<ItemProductResponse> result = itemProductDtos.stream().map(
+//                ItemDtoMapper::toItemProductResponse
+//            )
+//            .toList();
+//
+//        return CustomResponse.success(result);
+//    }
 
     @PostMapping("/restore")
     public CustomResponse<String> restoreStock(

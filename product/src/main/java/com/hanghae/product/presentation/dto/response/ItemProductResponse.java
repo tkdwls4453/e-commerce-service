@@ -9,8 +9,7 @@ public record ItemProductResponse(
     String description,
     String color,
     Integer size,
-    Integer price,
-    Integer stockQuantity
+    Integer price
 ) {
 
 }

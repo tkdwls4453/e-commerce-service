@@ -44,7 +44,6 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
             .build();
     }
 
-    // TODO : 여기서 쿼리가 2번 나가는데 이정도는 상관없을까?
     @Override
     public ProductDetailDto findByIdWithItem(Long productId) {
         ProductEntity productEntity = productJpaQueryRepository.findById(productId).orElseThrow(

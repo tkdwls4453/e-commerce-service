@@ -21,11 +21,12 @@ public class OrderItem {
         this.itemId = itemId;
     }
 
-    public static OrderItem create(Integer orderItemQuantity, Integer price, Long itemId) {
+    public static OrderItem create(Integer orderItemQuantity, Integer price, Long itemId, Order order) {
         return OrderItem.builder()
             .orderItemQuantity(orderItemQuantity)
             .price(price)
             .itemId(itemId)
+            .order(order)
             .build();
     }
 
