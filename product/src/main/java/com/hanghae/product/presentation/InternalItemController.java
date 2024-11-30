@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,14 @@ public class InternalItemController {
             .toList();
 
         return CustomResponse.success(result);
+    }
+
+    @GetMapping("/{itemId}")
+    public CustomResponse<ItemProductResponse> getItemProduct(
+        @PathVariable Long itemId
+    ){
+        ItemProductDto itemProductDto = itemService.getItemProduct(itemId);
+        return CustomResponse.success(ItemDtoMapper.toItemProductResponse(itemProductDto));
     }
 
 //    @PostMapping("/deduct")

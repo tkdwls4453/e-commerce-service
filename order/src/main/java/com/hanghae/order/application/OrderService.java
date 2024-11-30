@@ -3,8 +3,6 @@ package com.hanghae.order.application;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghae.common.annotation.ServiceLogExecutionTime;
-import com.hanghae.order.application.client.request.ReduceStockRequest;
-import com.hanghae.order.application.client.request.ReduceStockRequest.Info;
 import com.hanghae.order.application.client.response.ItemProductResponse;
 import com.hanghae.order.application.port.OrderItemRepository;
 import com.hanghae.order.application.port.OrderRepository;
@@ -18,7 +16,6 @@ import com.hanghae.order.domain.dto.response.OrderWithSimpleOrderItemsDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderItemDto;
 import com.hanghae.order.exception.InsufficientStockException;
-import com.hanghae.order.exception.InvalidOrderRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +52,6 @@ public class OrderService {
     public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList)
         throws IOException {
 
-        // ㅋㅐ시에서 아이템 정보들을 가져온다.
-        // 만약 캐시에 아이템 정보가 없다면 Feign Client 로 요청하여 아이템 정보를 가져온다.
-        // 캐시에 재고를 감소시킨다.
-        // 주문 아이템과 주문을 생성해서 반환한다.
-
         // 레디스에서 재고 감소
         reduceStock(orderCreateDtoList);
 
@@ -89,8 +81,7 @@ public class OrderService {
         return OrderDto.from(savedOrder, orderItemDtos);
     }
 
-    private List<ItemProductResponse> getItemProductResponses(
-        List<OrderCreateDto> orderCreateDtoList) throws JsonProcessingException {
+    private List<ItemProductResponse> getItemProductResponses(List<OrderCreateDto> orderCreateDtoList) throws JsonProcessingException {
         List<ItemProductResponse> itemProductResponseList = new ArrayList<>();
 
         for(OrderCreateDto info : orderCreateDtoList){
@@ -100,6 +91,16 @@ public class OrderService {
             ItemProductResponse itemProductResponse = null;
             if(itemJson == null){
                 // Feign Client 로 직접 조회 후 redis 에 저장
+                itemProductResponse = itemClient.getItemProduct(info.itemId()).getData();
+
+                String key = "item" + info.itemId() + ":info";
+                try {
+                    String data = objectMapper.writeValueAsString(itemProductResponse);
+                    redisTemplate.opsForValue().set(key, data);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("JSON 직렬화 실패", e);
+                }
+
             }else{
                 itemProductResponse = objectMapper.readValue(itemJson, ItemProductResponse.class);
             }

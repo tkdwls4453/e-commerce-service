@@ -20,6 +20,11 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     }
 
     @Override
+    public ItemProductDto getItemProduct(Long itemId) {
+        return itemJpaQueryRepository.getItemProduct(itemId);
+    }
+
+    @Override
     public Integer getStock(Long itemId) {
         return itemJpaQueryRepository.getStock(itemId);
     }
@@ -28,6 +33,8 @@ public class ItemQueryRepositoryImpl implements ItemQueryRepository {
     public List<Item> findAll() {
         return itemJpaQueryRepository.findAll().stream().map(ItemEntity::toDomain).toList();
     }
+
+
 
 
 }

@@ -31,6 +31,11 @@ public class ItemService {
         return itemQueryRepository.getItemProducts(itemIds);
     }
 
+    @Transactional(readOnly = true)
+    public ItemProductDto getItemProduct(Long itemId) {
+        return itemQueryRepository.getItemProduct(itemId);
+    }
+
     public List<ItemProductDto> reduceStock(List<Info> infos) throws IOException {
 
         // Redis KEYS (아이템별 재고 키 리스트)
@@ -71,4 +76,5 @@ public class ItemService {
             redisStockTemplate.opsForValue().increment(key, info.getQuantity());
         }
     }
+
 }
