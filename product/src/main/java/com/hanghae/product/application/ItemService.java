@@ -5,7 +5,9 @@ import com.hanghae.product.application.port.ItemQueryRepository;
 import com.hanghae.product.domain.dto.response.ItemProductDto;
 import com.hanghae.product.exception.InsufficientStockException;
 import com.hanghae.product.presentation.dto.request.ReduceStockRequest.Info;
+import com.hanghae.product.presentation.dto.response.ItemProductResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemService {
 
     private final ItemQueryRepository itemQueryRepository;
-    private final ItemCommandRepository itemCommandRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final RedisTemplate<String, Integer> redisStockTemplate;
     private final RedisScript<String> stockDecreaseScript;
@@ -30,8 +31,12 @@ public class ItemService {
         return itemQueryRepository.getItemProducts(itemIds);
     }
 
-    public void reduceStock(List<Info> infos) throws IOException {
+    @Transactional(readOnly = true)
+    public ItemProductDto getItemProduct(Long itemId) {
+        return itemQueryRepository.getItemProduct(itemId);
+    }
 
+    public List<ItemProductDto> reduceStock(List<Info> infos) throws IOException {
 
         // Redis KEYS (아이템별 재고 키 리스트)
         List<String> keys = infos.stream()
@@ -46,8 +51,6 @@ public class ItemService {
         // Lua 스크립트 실행 및 결과 확인
         String result = redisTemplate.execute(stockDecreaseScript, keys, args.toArray());
 
-        System.out.println("[test]" + result);
-
         // 결과가 에러 메시지인 경우 처리
         if (result != null && result.contains("err")) {
             throw new RuntimeException("Redis error: " + result);
@@ -57,8 +60,12 @@ public class ItemService {
             throw new InsufficientStockException();
         }
 
-        System.out.println("Success: " + result);
+        List<Long> itemIds = new ArrayList<>();
+        for(Info info : infos){
+            itemIds.add(info.getItemId());
+        }
 
+        return itemQueryRepository.getItemProducts(itemIds);
     }
 
     public void restoreStock(List<Info> infos){
@@ -69,4 +76,5 @@ public class ItemService {
             redisStockTemplate.opsForValue().increment(key, info.getQuantity());
         }
     }
+
 }

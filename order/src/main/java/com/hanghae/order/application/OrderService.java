@@ -1,7 +1,8 @@
 package com.hanghae.order.application;
 
-import com.hanghae.order.application.client.request.ReduceStockRequest;
-import com.hanghae.order.application.client.request.ReduceStockRequest.Info;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hanghae.common.annotation.ServiceLogExecutionTime;
 import com.hanghae.order.application.client.response.ItemProductResponse;
 import com.hanghae.order.application.port.OrderItemRepository;
 import com.hanghae.order.application.port.OrderRepository;
@@ -14,14 +15,14 @@ import com.hanghae.order.domain.dto.response.OrderItemDto;
 import com.hanghae.order.domain.dto.response.OrderWithSimpleOrderItemsDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderDto;
 import com.hanghae.order.domain.dto.response.SimpleOrderItemDto;
-import com.hanghae.order.exception.InvalidOrderRequest;
-import com.hanghae.order.presentation.response.SimpleOrderItemResponse;
+import com.hanghae.order.exception.InsufficientStockException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,64 +44,95 @@ public class OrderService {
     private final ItemClient itemClient;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisScript<String> stockDecreaseScript;
+    private final ObjectMapper objectMapper;
 
-    public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList) {
+    @ServiceLogExecutionTime
+    public OrderDto createOrder(Long userId, List<OrderCreateDto> orderCreateDtoList)
+        throws IOException {
 
-        Map<Long, Integer> quantityMap = new HashMap<>();
+        // 레디스에서 재고 감소
+        reduceStock(orderCreateDtoList);
 
-        for(OrderCreateDto orderCreateDto : orderCreateDtoList) {
-            quantityMap.put(orderCreateDto.itemId(), orderCreateDto.quantity());
-        }
-
-        // 아이템 아이디로 아이템 조회 (product service 에 feign client)
-        List<Long> itemIds = orderCreateDtoList.stream().map(OrderCreateDto::itemId).toList();
-
-        List<ItemProductResponse> itemAndProductInfo = itemClient.getItemProducts(itemIds).getData();
-        System.out.println(itemAndProductInfo);
+        // 레디스에서 아이템 정보 조회 (없으면 상품 서비스에게 요청)
+        List<ItemProductResponse> itemProductResponseList = getItemProductResponses(orderCreateDtoList);
 
         List<OrderItem> orderItems = new ArrayList<>();
 
         // orderItem 리스트 내용으로 order 생성
         Order order = Order.create(userId);
 
-        // 재고 감소 정보를 담기 위한 리스트
-        List<Info> infos = new ArrayList<>();
 
         // 아이템 내용과 수량 내용으로 orderItem 생성
-        for(int i=0; i<itemIds.size(); i++) {
-            ItemProductResponse realItemInfo = itemAndProductInfo.get(i);
+        for(int i=0; i<itemProductResponseList.size(); i++) {
+            ItemProductResponse realItemInfo = itemProductResponseList.get(i);
             OrderCreateDto orderItemInfo = orderCreateDtoList.get(i);
 
-            if(!orderItemInfo.isValidOrder(realItemInfo)){
-                throw new InvalidOrderRequest();
-            }
-
-            OrderItem orderItem = OrderItem.create(orderItemInfo.quantity(), realItemInfo.price(), realItemInfo.itemId());
-
+            OrderItem orderItem = OrderItem.create(orderItemInfo.quantity(), realItemInfo.price(), realItemInfo.itemId(), order);
             orderItems.add(orderItem);
-
-            // 재고 감소 정보를 모아둔다.
-            infos.add(
-                Info.builder()
-                    .itemId(realItemInfo.itemId())
-                    .quantity(orderItemInfo.quantity())
-                    .build()
-            );
         }
 
-        // 재고 감소 요청 (아이템 아이디, 주문량)
-        itemClient.reduceStock(
-            ReduceStockRequest.builder()
-                .infos(infos)
-                .build()
-        );
-
         order.addOrderItem(orderItems);
-        List<OrderItemDto> orderItemDtos = itemAndProductInfo.stream().map(response -> OrderItemDto.from(response, quantityMap)).toList();
+        List<OrderItemDto> orderItemDtos = itemProductResponseList.stream().map(response -> OrderItemDto.from(response, orderCreateDtoList)).toList();
 
         // order 와 orderItem 을 데이터베이스에 저장
         Order savedOrder = orderRepository.save(order);
         return OrderDto.from(savedOrder, orderItemDtos);
+    }
+
+    private List<ItemProductResponse> getItemProductResponses(List<OrderCreateDto> orderCreateDtoList) throws JsonProcessingException {
+        List<ItemProductResponse> itemProductResponseList = new ArrayList<>();
+
+        for(OrderCreateDto info : orderCreateDtoList){
+            String itemKey = "item" + info.itemId() + ":info";
+            String itemJson = redisTemplate.opsForValue().get(itemKey);
+
+            ItemProductResponse itemProductResponse = null;
+            if(itemJson == null){
+                // Feign Client 로 직접 조회 후 redis 에 저장
+                itemProductResponse = itemClient.getItemProduct(info.itemId()).getData();
+
+                String key = "item" + info.itemId() + ":info";
+                try {
+                    String data = objectMapper.writeValueAsString(itemProductResponse);
+                    redisTemplate.opsForValue().set(key, data);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException("JSON 직렬화 실패", e);
+                }
+
+            }else{
+                itemProductResponse = objectMapper.readValue(itemJson, ItemProductResponse.class);
+            }
+
+            itemProductResponseList.add(itemProductResponse);
+        }
+        return itemProductResponseList;
+    }
+
+    private void reduceStock(List<OrderCreateDto> orderCreateDtoList) throws IOException {
+
+        // Redis KEYS (아이템별 재고 키 리스트)
+        List<String> keys = orderCreateDtoList.stream()
+            .map(info -> "item" + info.itemId() + ":stock")
+            .toList();
+
+        // Redis ARGV (아이템별 감소할 수량 리스트)
+        List<String> args = orderCreateDtoList.stream()
+            .map(info -> String.valueOf(info.quantity()))
+            .toList();
+
+        // Lua 스크립트 실행 및 결과 확인
+        String result = redisTemplate.execute(stockDecreaseScript, keys, args.toArray());
+
+        // 결과가 에러 메시지인 경우 처리
+        if (result != null && result.contains("err")) {
+            throw new RuntimeException("Redis error: " + result);
+        }
+
+        if (result == null || !result.equals("All items updated successfully")) {
+            throw new InsufficientStockException();
+        }
     }
 
     @Transactional(readOnly = true)

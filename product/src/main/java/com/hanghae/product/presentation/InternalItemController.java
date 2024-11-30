@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,13 +38,36 @@ public class InternalItemController {
         return CustomResponse.success(result);
     }
 
-    @PostMapping("/deduct")
-    public CustomResponse<String> reduceStock(
-        @RequestBody ReduceStockRequest request
-    ) throws IOException {
-        itemService.reduceStock(request.infos());
-        return CustomResponse.success(null);
+    @GetMapping("/{itemId}")
+    public CustomResponse<ItemProductResponse> getItemProduct(
+        @PathVariable Long itemId
+    ){
+        ItemProductDto itemProductDto = itemService.getItemProduct(itemId);
+        return CustomResponse.success(ItemDtoMapper.toItemProductResponse(itemProductDto));
     }
+
+//    @PostMapping("/deduct")
+//    public CustomResponse<String> reduceStock(
+//        @RequestBody ReduceStockRequest request
+//    ) throws IOException {
+//        itemService.reduceStock(request.infos());
+//        return CustomResponse.success(null);
+//    }
+
+//    @PostMapping("/deduct")
+//    public CustomResponse<List<ItemProductResponse>> reduceStockAndGetInfo(
+//        @RequestBody ReduceStockRequest request
+//    ) throws IOException {
+//
+//        List<ItemProductDto> itemProductDtos = itemService.reduceStock(request.infos());
+//
+//        List<ItemProductResponse> result = itemProductDtos.stream().map(
+//                ItemDtoMapper::toItemProductResponse
+//            )
+//            .toList();
+//
+//        return CustomResponse.success(result);
+//    }
 
     @PostMapping("/restore")
     public CustomResponse<String> restoreStock(

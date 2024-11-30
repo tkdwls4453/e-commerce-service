@@ -11,4 +11,6 @@ public interface ItemQueryRepository {
     Integer getStock(Long itemId);
 
     List<Item> findAll();
+
+    ItemProductDto getItemProduct(Long itemId);
 }

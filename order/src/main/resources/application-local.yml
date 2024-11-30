@@ -6,4 +6,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+#    show-sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379

@@ -1,5 +1,5 @@
 server:
-  port: ≈
+  port: 8077
 
 spring:
   application:
@@ -12,6 +12,18 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # 모든 엔드포인트 활성화
+  metrics:
+    enable:
+      all: true # 모든 메트릭 활성화
+  endpoint:
+    health:
+      show-details: always # 헬스체크 세부 정보 표시
 
 eureka:
   client:

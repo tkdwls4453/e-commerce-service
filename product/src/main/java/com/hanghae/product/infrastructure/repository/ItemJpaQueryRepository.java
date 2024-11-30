@@ -24,10 +24,25 @@ public interface ItemJpaQueryRepository extends JpaRepository<ItemEntity, Long> 
 
     @Query(
         """
+        SELECT new com.hanghae.product.domain.dto.response.ItemProductDto(
+        i.id, p.name, p.description, i.color, i.size, i.price, i.stockQuantity
+        )
+        FROM ItemEntity i
+        JOIN i.product p
+        WHERE i.id = :itemId
+        """
+    )
+    ItemProductDto getItemProduct(@Param(value = "itemId")Long itemId);
+
+
+    @Query(
+        """
         SELECT i.stockQuantity
         FROM ItemEntity i
         WHERE i.id = :itemId
         """
     )
     Integer getStock(Long itemId);
+
+
 }
